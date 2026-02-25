@@ -1,0 +1,232 @@
+---
+title: Assignment 1
+output: html_document
+---
+
+# Assignment 1:
+
+In this assignment you will implement basic Fst and PCA calculators, and then use your own and more detailed implementations in order to learn some basic population history from genetic data
+
+*Not part of the assignment, but I strongly encourage you look visually at the genotype data (open the .geno file with a text editor). What do you see?*
+
+## Problem 1: Prepare genetic data
+
+Write functions that load in, subset, and perform basic calculations on **EIGENSTRAT** type *snp* *ind* and *geno* files.
+
+### Part A: Loading in text data
+
+Write three functions, `load_geno`, `load_snp`, and `load_ind`, that take in the path to the data, and then load in genetic data from text files into R dataframes / matrices
+
+```{r}
+if (!requireNamespace("dplyr", quietly = TRUE)) {
+    install.packages('dplyr')
+}
+if (!requireNamespace("pracma", quietly = TRUE)) {
+    install.packages('pracma')
+}
+if (!requireNamespace("tuple", quietly = TRUE)) {
+    install.packages('tuple')
+}
+if (!requireNamespace("tidyverse", quietly = TRUE)) {
+    install.packages('tidyverse')
+}
+if (!requireNamespace("data.table", quietly = TRUE)) {
+    install.packages('data.table')
+}
+
+library(dplyr)
+library(pracma)
+library(tuple) 
+library(tidyverse)
+library(data.table)
+```
+
+```{r}
+# load in the .geno file (this should take in a string and return a matrix)
+load_geno <- function(geno_file) {
+    # Your code goes here
+}
+
+# load in the .snp file (this should take in a string and return a data frame)
+load_snp <- function(snp_file) {
+    # Your code goes here
+}
+# load in the .ind file (this should take in a string and return a data frame)
+load_ind <- function(ind_file) {
+    # Your code goes here
+}
+
+# write a function that runs all of the above functions at once
+load_all <- function(prefix_name) {
+    # Your code goes here
+}
+```
+
+### Part B: Subsetting
+
+Write a function to subset the data to a single population
+
+```{r}
+# subset the geno matrix and ind dataframes to only included data from a single population 
+subset_by_pop <- function(data, pop_name) {
+    # Your code goes here
+}
+```
+
+### Part C: Calculating AF and N
+
+Write functions to calculate the allele frequency of the individuals in a geno matrix and one to find the number of individuals in a geno matrix.
+
+```{r}
+# find the allele frequency at each SNP (this should return a 1xM matrix)
+get_AF <- function(geno_matrix) {
+    # Your code goes here
+}
+
+# find the number of individuals
+# (this should likewise return a 1xM matrix)
+get_N <- function(geno_matrix) {
+    # Your code goes here
+}
+
+# find and return both (hint, call the functions you just wrote)
+get_stats <- function(geno_matrix) {
+    # Your code goes here
+}
+```
+
+## Problem 2: $F_{ST}$
+
+Implement a basic Fst function, compare it to a more widely used implementation, and use both to look at population genetics
+
+Hint: Two $F_{ST}$ formulas are $$F_{ST}^{Nei} = \frac{\left(p_1 - p_2\right)^2 - \left(2\left(p^*\left(1-p^*\right)\right)\left(\frac{1}{N_1} + \frac{1}{N_2}\right)\right)}{2\left(p^*\left(1-p^*\right)\right)}$$ and $$F_{ST}^{Hudson} = \frac{\left(p_1 - p_2\right)^2 - \left(\frac{p_1\left(1-p_1\right)}{N_1} + \frac{p_2\left(1-p_2\right)}{N_2}\right)}{\left(p_1\left(1-p_2\right)\right)+\left(p_2\left(1-p_1\right)\right)}$$ You should feel free to use either (or both!)
+
+### Part A: Implementation
+
+Write a function `fst(pop_1, pop_2)` that computes the $F_{ST}$ between and including two populations.
+
+```{r}
+# This should take in the Allele Frequencies and Ns for two populations
+# and should return the genome wide Fst value
+my_fst <- function(pop_1_stats, pop_2_stats) {
+    # Your code goes here
+}
+```
+
+Verify that your implementation of $F_{ST}$ is correct by checking the $F_{ST}$ between Nibelungheim, Brownie Isle, and Crane Island. Nibelungheim and Brownie Isle should have $F_{ST}\approxeq 0.01$, Nibelungheim and Crane Island should have $F_{ST}\approxeq 0.07$, and Brownie Isle and Crane Island should have $F_{ST} \approxeq 0.03$.
+
+There may be some variation here depending on your implementation. Don't worry too much about this so long as the numbers you get are *reasonable*
+
+```{r}
+ # Your code goes here
+```
+
+Calculate the $F_{ST}$ at every position along the chromosome between Crane Island and Nibelungheim. Do the same with Nibelungheim and Faemoria. Does the $F_{ST}$ vary across the genome? If so, in what ways and why might this be? Briefly (ie one sentence) discuss this. What is the $F_{ST}$ of SNP `SNP_1013264` (the SNP at position `205447853` for both?
+
+```{r}
+ # Your code goes here
+```
+
+### Part B: comparing implementations
+
+Use the [ADMIXTOOLS2 implementation of Fst](https://uqrmaie1.github.io/admixtools/reference/fst.html) in order to recompute the above statistics.
+
+```{r}
+if (!requireNamespace("devtools", quietly = TRUE)) {
+  install.packages("devtools")
+}
+if (!requireNamespace("Rcpp", quietly = TRUE)) {
+    install.packages("Rcpp")
+}
+if (!requireNamespace("tidyverse", quietly = TRUE)) {
+    install.packages("tidyverse")
+}
+if (!requireNamespace("igraph", quietly = TRUE)) {
+    install.packages("igraph")
+}
+if (!requireNamespace("plotly", quietly = TRUE)) {
+    install.packages("plotly")
+}
+
+if (!requireNamespace("stringi", quietly = TRUE)) {
+    install.packages("stringi")
+}
+
+library("devtools")
+library("Rcpp")
+library("tidyverse")
+library("igraph")
+library("plotly")
+library("stringi")
+
+devtools::install_github("uqrmaie1/admixtools")
+library("admixtools")
+```
+
+```{r}
+# calculate Fst
+
+fst('YOUR CODE GOES HERE')
+```
+
+Note that, due to our data being simulated, we avoid the issue of SNPs that lack data in some individuals (known as missingness). How do you think this is issue is normally handled?
+
+What differences do you see between ADMIXTOOLS2 and your implementation? Why might there be such differences? Discuss below
+
+## Problem 3: PCA
+
+Implement a basic PCA function, compare it to a more widely used implementation, and use both to look at population genetics
+
+### Part A: Implementing PCA (with help from R)
+
+Use the built in R [eigen function](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/eigen) in order to calculate the eigenvectors (PCs) of the genotype matrix
+
+```{r}
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+    install.packages("ggplot2")
+}
+library(ggplot2)
+```
+
+```{r}
+ # Your code goes here
+```
+
+Plot PC1 and PC2 (the two eigenvectors with the highest corresponding eigenvalue). Also calculate what percent of the total variance these two PCs describe
+
+```{r}
+ # Your code goes here
+```
+
+### Part B: Using an R implementation of smartpca
+
+Use an [R implementation](https://github.com/cran/smartsnp) of [smartpca](https://github.com/DReichLab/EIG/blob/master/POPGEN/README) to calculate a more refined PCA that takes missingness into account and can "project" populations onto the PCs found by "axis" populations you use to calculate the PCs. There is no need to do either of these things here, but this may come in handy for your project.
+
+Plot the first two PCs and find the amount of variation which they represent.
+
+```{r}
+if (!requireNamespace("smartsnp", quietly = TRUE)) {
+    install.packages('smartsnp')
+}
+library(smartsnp)
+```
+
+```{r}
+ # Your code goes here
+```
+
+Compare and contrast the output from the two implementations. How different are they and why might they different? What strategies do you think could be used to deal with missingness in PCA?
+
+## Problem 4: Exploration
+
+Use your knowledge of PCA and $F_{ST}$ to explore the data we have given you in any way you find reasonable.
+
+The data comes from simulated digital-genomes (AKA degnomes), a gnome like make-believe species which have interesting recent history on the "Fisher" islands. You have a set of 20 individuals from each island.
+
+What do you think the PCA and $F_{ST}$ are telling you about these populations? What sort of population history could lead to what you are seeing? In what order were the islands populated? What other events may have happened after the initial population? What further tests could you think of to check if that is correct? Is there anything else you noticed or found interesting? What happens when you don't include some population(s) in a PCA? What happens if you combine two populations and then calculate $F_{ST}$ with a third?
+
+You may explore any, all, or none of the suggested questions, so long as you investigate something interesting :)
+
+```{r}
+# Your code goes here
+```
