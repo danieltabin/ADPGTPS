@@ -7,7 +7,7 @@ output: html_document
 
 In this assignment you will implement basic Fst and PCA calculators, and then use your own and more detailed implementations in order to learn some basic population history from genetic data.
 
-The dataset for this assignment can be found (here)[https://github.com/danieltabin/ADPGTPS/blob/main/datasets/modern_fisher_2026.zip]
+The dataset for this assignment can be found [here](https://github.com/danieltabin/ADPGTPS/blob/main/datasets/modern_fisher_2026.zip)
 
 *Not part of the assignment, but I strongly encourage you look visually at the genotype data (open the .geno file with a text editor). What do you see?*
 
