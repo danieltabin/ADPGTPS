@@ -5,7 +5,9 @@ output: html_document
 
 # Assignment 1:
 
-In this assignment you will implement basic Fst and PCA calculators, and then use your own and more detailed implementations in order to learn some basic population history from genetic data
+In this assignment you will implement basic Fst and PCA calculators, and then use your own and more detailed implementations in order to learn some basic population history from genetic data.
+
+The dataset for this assignment can be found (here)[https://github.com/danieltabin/ADPGTPS/blob/main/datasets/modern_fisher_2026.zip]
 
 *Not part of the assignment, but I strongly encourage you look visually at the genotype data (open the .geno file with a text editor). What do you see?*
 
@@ -121,7 +123,7 @@ There may be some variation here depending on your implementation. Don't worry t
  # Your code goes here
 ```
 
-Calculate the $F_{ST}$ at every position along the chromosome between Crane Island and Nibelungheim. Do the same with Nibelungheim and Faemoria. Does the $F_{ST}$ vary across the genome? If so, in what ways and why might this be? Briefly (ie one sentence) discuss this. What is the $F_{ST}$ of SNP `SNP_1013264` (the SNP at position `205447853` for both?
+Calculate the $F_{ST}$ at every position along the chromosome between Crane Island and Nibelungheim. Do the same with Nibelungheim and Faemoria. Does the $F_{ST}$ vary across the genome? If so, in what ways and why might this be? Briefly (ie one sentence) discuss this.
 
 ```{r}
  # Your code goes here
